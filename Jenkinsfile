@@ -24,7 +24,6 @@ pipeline {
         sh 'dotnet-sonarscanner end -d:sonar.login=5bf81fa069a71f925b33640719d88f83488b0df8'
       }
     }
-  }
     stage('push nuget package nexus repo'){
       steps{
         sh 'dotnet package'

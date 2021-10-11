@@ -15,6 +15,7 @@ pipeline {
     stage('clone repo'){
       steps{
         git branch: 'main', url: 'https://github.com/propropro1905/ConsoleSample.git'
+        sh 'pwd'
       }
     }
     stage('build and scan sonar'){

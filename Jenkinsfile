@@ -15,12 +15,10 @@ pipeline {
     stage('clone repo'){
       steps{
         git branch: 'main', url: 'https://github.com/propropro1905/ConsoleSample.git'
-        sh 'pwd'
       }
     }
     stage('build and scan sonar'){
       steps {
-        sh 'pwd'
         sh 'dotnet-sonarscanner begin -k:"test_dotnet" -d:sonar.host.url=http://192.168.75.132:9000 -d:sonar.login=5bf81fa069a71f925b33640719d88f83488b0df8 '
         sh 'dotnet build'
         sh 'dotnet-sonarscanner end -d:sonar.login=5bf81fa069a71f925b33640719d88f83488b0df8'
@@ -28,7 +26,7 @@ pipeline {
     }
     stage('push nuget package nexus repo'){
       steps{
-        sh 'dotnet package'
+        sh 'dotnet pack'
         sh 'nuget sources add -Source  {NEXUS_URL}/repository/{NEXUS_REPOSITORY}/ -Name test_dotnet -Username admin -Password abc251199'
         sh 'nuget setapikey {NEXUS_API_KEY} -source {NEXUS_URL}/repository/{NEXUS_REPOSITORY}/'
         sh 'dotnet nuget push ./App/bin/Debug/*.nupkg --source {NEXUS_URL}/repository/{NEXUS_REPOSITORY} --api-key {NEXUS_API_KEY}'
